@@ -1,0 +1,11 @@
+doctype html
+html(lang="en",ng-app="main")
+    head
+        link(rel="stylesheet", href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')
+        title Форма
+    body(class="container")
+        form(action="/debt/upload", method="post", enctype="multipart/form-data")
+            div(class="input-group")
+                span(class="input-group-addon", style="width: 150px;") Файл с данными задолженности по РК
+                input(style="width: 300px;", class="form-control", type="file", name="file", accept="application/zip")
+                button(class="btn btn-default", type="submit") Загрузить
