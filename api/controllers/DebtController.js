@@ -16,9 +16,34 @@
  */
 
 module.exports = {
-    upload: function (req, res) {
+    prepareToLoad: function (req, res) {
         if (req.method === 'POST') {
-
+            var filepath = req.files.file.path;
+            Sessions.create({
+                filePath: filepath
+            }).done(function (err, session){
+                if (err) {
+                    return res.json({"error": err});
+                }else {
+                    // Подготовка отчета.
+                    var FsUrl = "http://si-sdiis/arcgis/rest/services/ai/test_shields/FeatureServer/0"; // сервис рекламные конструкции с задолженностями
+                    debts.buildSessionReport(session, FsUrl, function (err, result) {
+                        if (err) {
+                            session.report = err;
+                            session.save();
+                        } else {
+                            session.report = result;
+                            session.save(function(err){
+                                if (err){
+                                    //todo вызов sessionCompleted с ошибкой
+                                }
+                            });
+                            //todo По окончании вызов sessionCompleted
+                        }
+                    });
+                    return res.json({session:session});
+                }
+            });
         } else {
             res.view();
         }
