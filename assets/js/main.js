@@ -7,21 +7,24 @@
 
 var currentSessionId = 0;
 
-socket.on('prepReportCompleted', function (session) {
-    if (session.id == currentSessionId) {
+socket.on('prepReportCompleted', function (err, session) {
+    if (err){
+        $("#output").html("<div class='wrongMessage'><b>Произошла ошибка: </b> "+ err +"</div>");
+    } else {
+        if (session.id == currentSessionId) {
+            nextStep(session.state);
+            // todo вывести предварительный отчет
+            var report = JSON.parse(session.prepReport);
+            document.getElementById("FsTotalQuantity").innerHTML = report.FsObjInDebtsData.totalFsObjects;
+            document.getElementById("FsUpdateQuantity").innerHTML = report.FsObjInDebtsData.updateQuantity;
+            document.getElementById("FsMissQuantity").innerHTML = report.FsObjInDebtsData.missQuantity;
+            document.getElementById("FsMissObjList").innerHTML = report.FsObjInDebtsData.missList;
 
-        nextStep(session.state);
-        // todo вывести предварительный отчет
-        var report = JSON.parse(session.prepReport);
-        document.getElementById("FsTotalQuantity").innerHTML = report.FsObjInDebtsData.totalFsObjects;
-        document.getElementById("FsUpdateQuantity").innerHTML = report.FsObjInDebtsData.updateQuantity;
-        document.getElementById("FsMissQuantity").innerHTML = report.FsObjInDebtsData.missQuantity;
-        document.getElementById("FsMissObjList").innerHTML = report.FsObjInDebtsData.missList;
-
-        document.getElementById("DebtsTotalQuantity").innerHTML = report.DebtsDataInFsObj.totalDebtsObjects;
-        document.getElementById("DebtsUpdateQuantity").innerHTML = report.DebtsDataInFsObj.updateQuantity;
-        document.getElementById("DebtsMissQuantity").innerHTML = report.DebtsDataInFsObj.missQuantity;
-        document.getElementById("DebtsMissObjList").innerHTML = report.DebtsDataInFsObj.missList;
+            document.getElementById("DebtsTotalQuantity").innerHTML = report.DebtsDataInFsObj.totalDebtsObjects;
+            document.getElementById("DebtsUpdateQuantity").innerHTML = report.DebtsDataInFsObj.updateQuantity;
+            document.getElementById("DebtsMissQuantity").innerHTML = report.DebtsDataInFsObj.missQuantity;
+            document.getElementById("DebtsMissObjList").innerHTML = report.DebtsDataInFsObj.missList;
+        }
     }
 });
 
