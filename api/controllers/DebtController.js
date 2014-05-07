@@ -27,8 +27,8 @@ module.exports = {
                     return res.json({"message": err});
                 } else {
                     // Подготовка предварительного отчета.
-                    var FsUrl = "http://si-sdiis/arcgis/rest/services/ai/test_shields/FeatureServer/0"; // сервис рекламные конструкции с задолженностями
-                    debts.buildPrepReport(session, FsUrl, function (err, result) {
+                    var FsUrl = "http://si-sdiis/arcgis/rest/services/ai/test_shields/FeatureServer/0"; // сервис рекламные конструкции с задолженностями в котором будет обновлена задолженность
+                    debts.buildPrepReport(session.filePath, FsUrl, function (err, result) {
                         if (err) {
                             session.prepReport = err;
                             session.save(function (err) {
