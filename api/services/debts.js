@@ -1,25 +1,27 @@
 /**
  * Created by aivanov on 30.04.2014.
  */
-var debtsUtils = require("./../../lib/debtsUtils");
+var debtsXlsUtils = require("./../../lib/debtsXlsUtils");
 var arcgis = require('./../../lib/arcgis');
 var _ = require('underscore');
+var Sails = require('sails');
+var io = Sails.io;
 
-module.exports.buildSessionReport = function (session, fsUrl, callback) {
-    debtsUtils.parseToJson(session.filePath, function (err, result) {
+module.exports.buildPrepReport = function (session, fsUrl, callback) {
+    debtsXlsUtils.parseToJson(session.filePath, function (err, result) {
         if (err) {
             callback(err, null);
         } else {
             // массив записей с данными о задолженности result
             var debtsData = result;
-            arcgis.connectFeatureServer(fsUrl, function (err, Fs){
+            arcgis.connectFeatureServer(fsUrl, function (err, Fs) {
                 if (err) throw err;
                 Fs.query({returnGeometry: true, where: "1=1"}, function (err, result) {
                     if (err) {
                         callback(err, null);
                     } else {
                         var fsObjects = result.features;
-                        createSessionReport(debtsData, fsObjects, callback);
+                        createPrepReport(debtsData, fsObjects, callback);
                     }
                 })
             })
@@ -27,10 +29,14 @@ module.exports.buildSessionReport = function (session, fsUrl, callback) {
     })
 };
 
-var createSessionReport = function (debtsData, fsObjects, callback) {
+module.exports.messageEmit = function (ch, data) {
+    io.sockets.emit(ch, data);
+}
+
+var createPrepReport = function (debtsData, fsObjects, callback) {
     var missingFsObjects = searchFsObjInDebtsData(debtsData, fsObjects);
     var missingDebtsObjects = searchDebtsDataInFsObj(fsObjects, debtsData);
-    var sessionReport = prepareSessionReport(debtsData, fsObjects, missingDebtsObjects, missingFsObjects);
+    var sessionReport = preparePrepReport(debtsData, fsObjects, missingDebtsObjects, missingFsObjects);
     callback(null, JSON.stringify(sessionReport));
 }
 
@@ -41,7 +47,7 @@ var searchFsObjInDebtsData = function (debtsData, fsObjects) {
         var even = _.find(debtsData, function (debt) {
             return debt["СНР.Объект аренды"] == fsObj.attributes["NUMBER_CONSTR"];
         });
-        if (!even){
+        if (!even) {
             missingList.push(fsObj.attributes["NUMBER_CONSTR"]);
         }
     });
@@ -55,7 +61,7 @@ var searchDebtsDataInFsObj = function (fsObjects, debtsData) {
         var even = _.find(fsObjects, function (fsObj) {
             return debt["СНР.Объект аренды"] == fsObj.attributes["NUMBER_CONSTR"];
         });
-        if (!even){
+        if (!even) {
             var stelName = debt["СНР.Объект аренды"].indexOf('ст');   // проверяем на имя стелы
             if (stelName == -1) {
                 missingList.push(debt["СНР.Объект аренды"]);
@@ -65,7 +71,7 @@ var searchDebtsDataInFsObj = function (fsObjects, debtsData) {
     return missingList;
 }
 
-var prepareSessionReport = function (debtsData, fsObjects, missingDebtsObjects, missingFsObjects) {
+var preparePrepReport = function (debtsData, fsObjects, missingDebtsObjects, missingFsObjects) {
     var report = {};
     report.FsObjInDebtsData = {};
     report.FsObjInDebtsData.missQuantity = missingFsObjects.length;
