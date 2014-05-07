@@ -114,7 +114,7 @@ module.exports.sockets = {
         //
         // to allow the connection, call `cb(null, true)`
         // to prevent the connection, call `cb(null, false)`
-        // to report an error, call `cb(err)`
+        // to prepReport an error, call `cb(err)`
     }
   */
   authorization: true,
