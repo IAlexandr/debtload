@@ -38,3 +38,12 @@
     vertical-align: top;
     margin: 2px;
 }
+.clear {
+    clear: both;
+}
+.paneHide {
+    display: none;
+}
+.paneShow {
+    display: none;
+}

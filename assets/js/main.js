@@ -27,10 +27,18 @@ socket.on('prepReportCompleted', function (session) {
 
 function clearActiveClass() {
     $('li').removeClass('active');
+    $('.panel').removeClass('paneShow');
+    $( ".panel" ).fadeOut( 1000, function() {
+        // Animation complete.
+    });
 }
 function nextStep(step) {
     clearActiveClass();
     $('#' + step).addClass('active');
+   // $('#' + step + "Panel").addClass('paneShow');
+    $( '#' + step + "Panel" ).fadeIn( "slow", function() {
+        // Animation complete
+    });
 }
 
 

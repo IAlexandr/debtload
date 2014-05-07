@@ -23,53 +23,59 @@ html(lang="en",ng-app="main")
             li(id="dataStartUpdate") Обновление данных
             li(id="dataUpdated") Данные обновлены
             li(id="resultReport") Отчет
-        div(class="well")
-            form(action="debt/prepareToLoad", method="post", id="form", name="form", enctype="multipart/form-data")
-                div(class="input-group")
-                    span(class="input-group-addon", style="width: 150px;") Файл с новыми данными о задолженности (в формате *.xls)
-                    input(class="form-control", type="file",id="file", name="file", accept="application/vnd.ms-excel")
-                    div(class="input-group-btn")
-                        button(class="btn btn-default", type="submit") Загрузить
-                        img(src="images/ajax-loader.gif", id="loading-img", style="display:none;", alt="Please Wait")
-                div(id="progressbox")
-                    div(id="progressbar")
-                    div(id="statustxt") 0%
-                div(id="output")
-
-        ul(class="list-group")
-            li(class="list-group-item list-group-item-info")
-                span Поиск рекламных конструкций в файле
-            li(class="list-group-item")
-                span Общее кол-во рекламных конструкций
-                span(class="badge")
-                    span(id="FsTotalQuantity")
-            li(class="list-group-item")
-                span Обновится
-                span(class="badge")
-                    span(id="FsUpdateQuantity")
-            li(class="list-group-item")
-                span Не найдено
-                span(class="badge")
-                    span(id="FsMissQuantity")
-            li(class="list-group-item")
-                span Список ненайденных рекламных конструкций (СНР. объекта аренды)
-                div(id="FsMissObjList")
-        ul(class="list-group")
-            li(class="list-group-item list-group-item-info")
-                span Поиск рекламных конструкций в слое
-            li(class="list-group-item")
-                span Общее кол-во рекламных конструкций
-                span(class="badge")
-                    span(id="DebtsTotalQuantity")
-            li(class="list-group-item")
-                span Обновится
-                span(class="badge")
-                    span(id="DebtsUpdateQuantity")
-            li(class="list-group-item")
-                span Не найдено
-                span(class="badge")
-                    span(id="DebtsMissQuantity")
-            li(class="list-group-item")
-                span Список ненайденных рекламных конструкций (СНР. объекта аренды)
-                div(id="DebtsMissObjList")
-        button(class="btn btn-default", type="button", onclick="updateDebts()") Обновить задолженность в слое
+        div(class="panel panel-default paneHide", id="uploadFilePanel")
+            div(class="panel-heading") Загрузка файла
+            div(class="panel-body")
+                form(action="debt/prepareToLoad", method="post", id="form", name="form", enctype="multipart/form-data")
+                    div(class="input-group")
+                        span(class="input-group-addon", style="width: 150px;") Файл с новыми данными о задолженности (в формате *.xls)
+                        input(class="form-control", type="file",id="file", name="file", accept="application/vnd.ms-excel")
+                        div(class="input-group-btn")
+                            button(class="btn btn-default", type="submit") Загрузить
+                            img(src="images/ajax-loader.gif", id="loading-img", style="display:none;", alt="Please Wait")
+                    div(id="progressbox")
+                        div(id="progressbar")
+                        div(id="statustxt") 0%
+                    div(id="output")
+        div(class="panel panel-default paneHide", id="prepReportPanel")
+            div(class="panel-heading")
+                div(style="float:left; line-height:32px;") Предварительный отчет
+                button(class="btn btn-primary", style="float:right; display:block;",  type="button", onclick="updateDebts()") Обновить задолженность в слое
+                div(class="clear")
+            div(class="panel-body")
+                ul(class="list-group")
+                    li(class="list-group-item list-group-item-info")
+                        span Поиск рекламных конструкций в файле
+                    li(class="list-group-item")
+                        span Общее кол-во рекламных конструкций
+                        span(class="badge")
+                            span(id="FsTotalQuantity")
+                    li(class="list-group-item")
+                        span Обновится
+                        span(class="badge")
+                            span(id="FsUpdateQuantity")
+                    li(class="list-group-item")
+                        span Не найдено
+                        span(class="badge")
+                            span(id="FsMissQuantity")
+                    li(class="list-group-item")
+                        span Список ненайденных рекламных конструкций (СНР. объекта аренды)
+                        div(id="FsMissObjList")
+                ul(class="list-group")
+                    li(class="list-group-item list-group-item-info")
+                        span Поиск рекламных конструкций в слое
+                    li(class="list-group-item")
+                        span Общее кол-во рекламных конструкций
+                        span(class="badge")
+                            span(id="DebtsTotalQuantity")
+                    li(class="list-group-item")
+                        span Обновится
+                        span(class="badge")
+                            span(id="DebtsUpdateQuantity")
+                    li(class="list-group-item")
+                        span Не найдено
+                        span(class="badge")
+                            span(id="DebtsMissQuantity")
+                    li(class="list-group-item")
+                        span Список ненайденных рекламных конструкций (СНР. объекта аренды)
+                        div(id="DebtsMissObjList")
