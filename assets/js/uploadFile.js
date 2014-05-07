@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    nextStep('uploadFile');
     function beforeSubmit() {
         //check whether client browser fully supports all File API
         if (window.File && window.FileReader && window.FileList && window.Blob) {
