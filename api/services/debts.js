@@ -29,8 +29,8 @@ module.exports.buildPrepReport = function (session, fsUrl, callback) {
     })
 };
 
-module.exports.messageEmit = function (ch, data) {
-    io.sockets.emit(ch, data);
+module.exports.messageEmit = function (ch, err, data) {
+    io.sockets.emit(ch, err, data);
 }
 
 var createPrepReport = function (debtsData, fsObjects, callback) {
