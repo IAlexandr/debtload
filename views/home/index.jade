@@ -2,10 +2,74 @@ doctype html
 html(lang="en",ng-app="main")
     head
         link(rel="stylesheet", href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')
-        title Форма
+        link(rel="stylesheet", href='/styles/style.css')
+        script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+        script(type="text/javascript", src="http://malsup.github.com/jquery.form.js")
+        script(type="text/javascript", src="/js/socket.io.js")
+        script(type="text/javascript", src="/js/sails.io.js")
+        script(type="text/javascript", src="js/app.js")
+
+        script(type="text/javascript", src="js/main.js")
+        script(type="text/javascript", src="js/uploadFile.js")
+
+        title Обновление данных
     body(class="container")
-        form(action="/debt/upload", method="post", enctype="multipart/form-data")
-            div(class="input-group")
-                span(class="input-group-addon", style="width: 150px;") Файл с данными задолженности по РК
-                input(style="width: 300px;", class="form-control", type="file", name="file", accept="application/zip")
-                button(class="btn btn-default", type="submit") Загрузить
+        div(class="page-header")
+            h2 Обновление задолженности в слое рекламные конструкции
+        ol(class="breadcrumb")
+            li(id="uploadFile", class="active") Загрузка файла
+            li(id="fileLoaded") Файл загружен
+            li(id="prepReport") Предварительный отчет
+            li(id="dataStartUpdate") Обновление данных
+            li(id="dataUpdated") Данные обновлены
+            li(id="resultReport") Отчет
+        div(class="well")
+            form(action="debt/prepareToLoad", method="post", id="form", name="form", enctype="multipart/form-data")
+                div(class="input-group")
+                    span(class="input-group-addon", style="width: 150px;") Файл с новыми данными о задолженности (в формате *.xls)
+                    input(class="form-control", type="file",id="file", name="file", accept="application/vnd.ms-excel")
+                    div(class="input-group-btn")
+                        button(class="btn btn-default", type="submit") Загрузить
+                        img(src="images/ajax-loader.gif", id="loading-img", style="display:none;", alt="Please Wait")
+                div(id="progressbox")
+                    div(id="progressbar")
+                    div(id="statustxt") 0%
+                div(id="output")
+
+        ul(class="list-group")
+            li(class="list-group-item list-group-item-info")
+                span Поиск рекламных конструкций в файле
+            li(class="list-group-item")
+                span Общее кол-во рекламных конструкций
+                span(class="badge")
+                    span(id="FsTotalQuantity")
+            li(class="list-group-item")
+                span Обновится
+                span(class="badge")
+                    span(id="FsUpdateQuantity")
+            li(class="list-group-item")
+                span Не найдено
+                span(class="badge")
+                    span(id="FsMissQuantity")
+            li(class="list-group-item")
+                span Список ненайденных рекламных конструкций (СНР. объекта аренды)
+                div(id="FsMissObjList")
+        ul(class="list-group")
+            li(class="list-group-item list-group-item-info")
+                span Поиск рекламных конструкций в слое
+            li(class="list-group-item")
+                span Общее кол-во рекламных конструкций
+                span(class="badge")
+                    span(id="DebtsTotalQuantity")
+            li(class="list-group-item")
+                span Обновится
+                span(class="badge")
+                    span(id="DebtsUpdateQuantity")
+            li(class="list-group-item")
+                span Не найдено
+                span(class="badge")
+                    span(id="DebtsMissQuantity")
+            li(class="list-group-item")
+                span Список ненайденных рекламных конструкций (СНР. объекта аренды)
+                div(id="DebtsMissObjList")
+        button(class="btn btn-default", type="button", onclick="updateDebts()") Обновить задолженность в слое
