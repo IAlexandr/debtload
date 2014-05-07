@@ -6,10 +6,20 @@
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
 
+/*
+ uploadFile
+ fileLoaded
+ prepReport
+ dataStartUpdate
+ dataUpdated
+ resultReport
+* */
 module.exports = {
 
     attributes: {
         filePath:'string',
-        report:'string'
+        state:'string',
+        prepReport:'string',
+        resultReport: 'string'
     }
 };
