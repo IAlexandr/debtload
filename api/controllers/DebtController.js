@@ -22,29 +22,34 @@ module.exports = {
             Sessions.create({
                 filePath: filepath,
                 state: 'uploadFile'
-            }).done(function (err, session){
+            }).done(function (err, session) {
                 if (err) {
-                    return res.json({"error": err});
-                }else {
-                    // Подготовка отчета.
+                    return res.json({"message": err});
+                } else {
+                    // Подготовка предварительного отчета.
                     var FsUrl = "http://si-sdiis/arcgis/rest/services/ai/test_shields/FeatureServer/0"; // сервис рекламные конструкции с задолженностями
                     debts.buildPrepReport(session, FsUrl, function (err, result) {
                         if (err) {
                             session.prepReport = err;
-                            session.save();
+                            session.save(function (err) {
+                                if (err) {
+                                    debts.messageEmit('prepReportCompleted', err, session);
+                                }
+                            });
+                            debts.messageEmit('prepReportCompleted', err, session);
                         } else {
                             session.state = 'prepReport';
                             session.prepReport = result;
 
-                            session.save(function(err){
-                                if (err){
-                                    //todo вызов prepReportCompleted с ошибкой
+                            session.save(function (err) {
+                                if (err) {
+                                    debts.messageEmit('prepReportCompleted', err, session);
                                 }
                             });
-                            debts.messageEmit('prepReportCompleted', session);
+                            debts.messageEmit('prepReportCompleted', err, session);
                         }
                     });
-                    return res.json({sessionId:session.id});
+                    return res.json({sessionId: session.id});
                 }
             });
         } else {
@@ -56,11 +61,13 @@ module.exports = {
         if (req.method === 'POST') {
             Sessions.findOne({
                 id: req.body.currentSessionId
-            }).done(function(err, session) {
+            }).done(function (err, session) {
                 if (err) {
-                    return console.log(err);
+                    res.json({"message": "Произошла ошибка доступа к сессии! Доступ к загруженному файлу отсутствует, начните с загрузки файла."});
                 } else {
-                    // todo начать обновление задолженности в слое
+                    // todo начать обновление задолженности в слое. В итоге вызываем  debts.messageEmit('resultReportCompleted', err, session);
+
+                    res.json({"message": "Выполняется обновление задолженности в слое, пожалуйста подождите."});
                 }
             });
         }
