@@ -45,7 +45,8 @@ module.exports = {
                     res.json(result);
                 }
             });
-            res.json();
+        } else {
+            res.view();
         }
     },
 

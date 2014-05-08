@@ -6,20 +6,21 @@ var io = Sails.io;
 module.exports.prepareUpdate = function (filePath, FsUrl, callback) {
     Sessions.create({
         filePath: filePath,
-        state: 'uploadFile'
+        state: 'uploadFile',
+        fsUrl: FsUrl
     }).done(function (err, session) {
         if (err) {
             callback({"error": err}, null);
         } else {
             // Подготовка предварительного отчета.
-            asyncBuildPrepReport(session, FsUrl);
+            asyncBuildPrepReport(session);
             callback(null, {"sessionId": session.id});
         }
     });
 };
 
-var asyncBuildPrepReport = function (session, FsUrl) {
-    debtsPrepare.buildPrepReport(session.filePath, FsUrl, function (err, result) {
+var asyncBuildPrepReport = function (session) {
+    debtsPrepare.buildPrepReport(session.filePath, session.fsUrl, function (err, result) {
         if (err) {
             session.prepReport = err;
             session.save(function (err) {
@@ -42,21 +43,21 @@ var asyncBuildPrepReport = function (session, FsUrl) {
     });
 };
 
-module.exports.startUpdate = function (sessionId, fsUrl, callback) {
+module.exports.startUpdate = function (sessionId, callback) {
     Sessions.findOne({
         id: sessionId
     }).done(function (err, session) {
         if (err) {
             callback({"message": "Произошла ошибка доступа к сессии! Доступ к загруженному файлу отсутствует, начните с шага №1: Загрузка файла."}, null);
         } else {
-            dataUpdate(session, fsUrl);
+            dataUpdate(session);
             callback(null, {"message": "Выполняется обновление задолженности в слое, пожалуйста подождите."});
         }
     });
 };
 
-var dataUpdate = function (session, FsUrl) {
-    debtsUpdate.update(session.filePath, FsUrl, function (err, result) {
+var dataUpdate = function (session) {
+    debtsUpdate.update(session.filePath, session.fsUrl, function (err, result) {
         if (err) {
             session.resultReport = err;
             session.save(function (err) {

@@ -19,6 +19,7 @@ module.exports = {
     attributes: {
         filePath:'string',
         state:'string',
+        fsUrl: 'string',
         prepReport:'string',
         resultReport: 'string'
     }
