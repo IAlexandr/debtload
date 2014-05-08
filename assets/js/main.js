@@ -47,7 +47,7 @@ function nextStep(step) {
 
 function updateDebts () {
     $.ajax({
-        url: "debt/debtsUpdate",
+        url: "debt/update",
         type: "POST",
         data: {
             currentSessionId: currentSessionId
