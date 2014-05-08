@@ -14,7 +14,8 @@
     "xlsjs": "~0.6.17",
     "superagent": "~0.18.0",
     "underscore": "~1.6.0",
-    "connect": "~2.15.0"
+    "connect": "~2.15.0",
+    "async": "~0.8.0"
   },
   "scripts": {
     "start": "node app.js",
