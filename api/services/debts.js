@@ -1,5 +1,5 @@
 var debtsPrepare = require("./../../lib/debtsPrepare");
-var debtsUpdate = require("./../../lib/debtsPrepare");
+var debtsUpdate = require("./../../lib/debtsUpdate");
 var Sails = require('sails');
 var io = Sails.io;
 
