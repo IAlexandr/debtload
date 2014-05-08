@@ -17,16 +17,16 @@ html(lang="en",ng-app="main")
         div(class="page-header")
             h2 Обновление задолженности в слое рекламные конструкции
         ol(class="breadcrumb")
-            li(id="uploadFile", class="active") Загрузка файла
-            li(id="fileLoaded") Файл загружен
-            li(id="prepReport") Предварительный отчет
-            li(id="dataStartUpdate") Обновление данных
-            li(id="dataUpdated") Данные обновлены
-            li(id="resultReport") Отчет
+            li(id="uploadFile", class="active") 1. Загрузка файла
+            li(id="fileLoaded") 2. Файл загружен
+            li(id="prepReport") 3. Предварительный отчет
+            li(id="dataStartUpdate") 4. Обновление данных
+            li(id="dataUpdated") 5. Данные обновлены
+            li(id="resultReport") 6. Отчет
         div(class="panel panel-default paneHide", id="uploadFilePanel")
             div(class="panel-heading") Загрузка файла
             div(class="panel-body")
-                form(action="debt/prepareToLoad", method="post", id="form", name="form", enctype="multipart/form-data")
+                form(action="debt/prepare", method="post", id="form", name="form", enctype="multipart/form-data")
                     div(class="input-group")
                         span(class="input-group-addon", style="width: 150px;") Файл с новыми данными о задолженности (в формате *.xls)
                         input(class="form-control", type="file",id="file", name="file", accept="application/vnd.ms-excel")
@@ -59,7 +59,7 @@ html(lang="en",ng-app="main")
                         span(class="badge")
                             span(id="FsMissQuantity")
                     li(class="list-group-item")
-                        span Список ненайденных рекламных конструкций (СНР. объекта аренды)
+                        span Список ненайденных рекламных конструкций (СНР. объекта аренды):
                         div(id="FsMissObjList")
                 ul(class="list-group")
                     li(class="list-group-item list-group-item-info")
@@ -77,5 +77,5 @@ html(lang="en",ng-app="main")
                         span(class="badge")
                             span(id="DebtsMissQuantity")
                     li(class="list-group-item")
-                        span Список ненайденных рекламных конструкций (СНР. объекта аренды)
+                        span Список ненайденных рекламных конструкций (СНР. объекта аренды):
                         div(id="DebtsMissObjList")
