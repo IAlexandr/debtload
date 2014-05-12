@@ -5,40 +5,33 @@ var io = Sails.io;
 
 module.exports.prepareUpdate = function (filePath, FsUrl, callback) {
     Sessions.create({
-        filePath: filePath,
+        sourceFilePath: filePath,
         state: 'uploadFile',
         fsUrl: FsUrl
     }).done(function (err, session) {
         if (err) {
-            callback({"error": err}, null);
+            return callback({"error": err}, null);
         } else {
             // Подготовка предварительного отчета.
             asyncBuildPrepReport(session);
-            callback(null, {"sessionId": session.id});
+            return callback(null, {"sessionId": session.id});
         }
     });
 };
-
 var asyncBuildPrepReport = function (session) {
-    debtsPrepare.buildPrepReport(session.filePath, session.fsUrl, function (err, result) {
+    debtsPrepare.buildPrepReport(session.sourceFilePath, session.fsUrl, function (err, result) {
         if (err) {
             session.prepReport = err;
             session.save(function (err) {
-                if (err) {
-                    io.sockets.emit('prepReportCompleted', err, session);
-                }
+                io.sockets.emit('prepReportCompleted', err, session);
             });
-            io.sockets.emit('prepReportCompleted', err, session);
         } else {
             session.state = 'prepReport';
             session.prepReport = result;
 
             session.save(function (err) {
-                if (err) {
-                    io.sockets.emit('prepReportCompleted', err, session);
-                }
+                io.sockets.emit('prepReportCompleted', err, session);
             });
-            io.sockets.emit('prepReportCompleted', err, session);
         }
     });
 };
@@ -48,34 +41,45 @@ module.exports.startUpdate = function (sessionId, callback) {
         id: sessionId
     }).done(function (err, session) {
         if (err) {
-            callback({"message": "Произошла ошибка доступа к сессии! Доступ к загруженному файлу отсутствует, начните с шага №1: Загрузка файла."}, null);
+            return callback({"message": "Произошла ошибка доступа к сессии! Доступ к загруженному файлу отсутствует, начните с шага №1: Загрузка файла."}, null);
         } else {
             dataUpdate(session);
-            callback(null, {"message": "Выполняется обновление задолженности в слое, пожалуйста подождите."});
+            return callback(null, {"message": "Выполняется обновление задолженности в слое, пожалуйста подождите."});
+        }
+    });
+};
+var dataUpdate = function (session) {
+    debtsUpdate.update(session.sourceFilePath, session.fsUrl, function (err, result) {
+        if (err) {
+            session.updateReport = err;
+            session.save(function (err) {
+                return io.sockets.emit('updateReportCompleted', err, session);
+            });
+        } else {
+            session.state = 'dataUpdated';
+            session.updateReport = result;
+
+            session.save(function (err) {
+                io.sockets.emit('updateReportCompleted', err, session);
+            });
         }
     });
 };
 
-var dataUpdate = function (session) {
-    debtsUpdate.update(session.filePath, session.fsUrl, function (err, result) {
+module.exports.updateReportToXls = function (sessionId, callback) {
+    Sessions.findOne({
+        id: sessionId
+    }).done(function (err, session) {
+        if (!session) {
+            return callback({"message": " Сессия не найдена."}, null);
+        }
         if (err) {
-            session.resultReport = err;
-            session.save(function (err) {
-                if (err) {
-                    io.sockets.emit('resultReportCompleted', err, session);
-                }
-            });
-            io.sockets.emit('resultReportCompleted', err, session);
+            return callback({"message": "Произошла ошибка доступа к сессии!"}, null);
         } else {
-            session.state = 'dataUpdated';
-            session.resultReport = result;
-
-            session.save(function (err) {
-                if (err) {
-                    io.sockets.emit('resultReportCompleted', err, session);
-                }
-            });
-            io.sockets.emit('resultReportCompleted', err, session);
+            buildUpdateReportXls(session, callback);
         }
     });
+};
+var buildUpdateReportXls = function (session) {
+
 };
