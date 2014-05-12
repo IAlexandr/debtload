@@ -12,15 +12,16 @@
  prepReport
  dataStartUpdate
  dataUpdated
- resultReport
-* */
+ updateReport
+ * */
 module.exports = {
 
     attributes: {
-        filePath:'string',
-        state:'string',
+        sourceFilePath: 'string',
+        state: 'string',
         fsUrl: 'string',
-        prepReport:'string',
-        resultReport: 'string'
+        prepReport: 'string',
+        updateReport: 'string',
+        updateReportXlsFilePath: 'string'
     }
 };
