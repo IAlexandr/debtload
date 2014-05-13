@@ -51,7 +51,8 @@ module.exports.startUpdate = function (sessionId, callback) {
     });
 };
 var dataUpdate = function (session) {
-    debtsUpdate.update(session.sourceFilePath, session.fsUrl, function (err, result) {
+    var updateReportPath = path.resolve(__dirname + '../../../tmp/updateReport' + session.id + '.xlsx');
+    debtsUpdate.update(updateReportPath, session.sourceFilePath, session.fsUrl, function (err, result) {
         if (err) {
             session.updateReport = err;
             session.save(function (err) {
@@ -69,7 +70,7 @@ var dataUpdate = function (session) {
 };
 
 module.exports.sendReport = function (sessionId, callback) {
-    var pth = path.resolve(__dirname + '../../../tmp/updateReport' + sessionId + '.xls');
+    var pth = path.resolve(__dirname + '../../../tmp/updateReport' + sessionId + '.xlsx');
     fs.exists(pth, function (exists) {
         if (exists) {
             callback(null, pth);
