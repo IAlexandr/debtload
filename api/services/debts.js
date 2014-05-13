@@ -1,6 +1,8 @@
 var debtsPrepare = require("./../../lib/debtsPrepare");
 var debtsUpdate = require("./../../lib/debtsUpdate");
 var Sails = require('sails');
+var path = require('path');
+var fs = require('fs');
 var io = Sails.io;
 
 module.exports.prepareUpdate = function (filePath, FsUrl, callback) {
@@ -66,20 +68,13 @@ var dataUpdate = function (session) {
     });
 };
 
-module.exports.updateReportToXls = function (sessionId, callback) {
-    Sessions.findOne({
-        id: sessionId
-    }).done(function (err, session) {
-        if (!session) {
-            return callback({"message": " Сессия не найдена."}, null);
-        }
-        if (err) {
-            return callback({"message": "Произошла ошибка доступа к сессии!"}, null);
+module.exports.sendReport = function (sessionId, callback) {
+    var pth = path.resolve(__dirname + '../../../tmp/updateReport' + sessionId + '.xls');
+    fs.exists(pth, function (exists) {
+        if (exists) {
+            callback(null, pth);
         } else {
-            buildUpdateReportXls(session, callback);
+            callback("Отчет не найден.", null);
         }
     });
-};
-var buildUpdateReportXls = function (session) {
-
 };
