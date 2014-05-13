@@ -33,6 +33,7 @@ html(lang="en",ng-app="main")
                         input(class="form-control", type="file",id="file", name="file", accept="application/vnd.ms-excel")
                         div(class="input-group-btn")
                             button(class="btn btn-default", type="submit") Загрузить
+
                             img(src="images/ajax-loader.gif", id="loading-img", style="display:none;", alt="Please Wait")
                     div(id="progressbox")
                         div(id="progressbar")
@@ -90,7 +91,8 @@ html(lang="en",ng-app="main")
         div(class="panel panel-default paneHide", id="updateReportPanel")
             div(class="panel-heading")
                 div(style="float:left; line-height:32px;") Отчет
-                button(class="btn btn-primary", style="float:right; display:block;",  type="button", onclick="getUpdateReportXls()") Выгрузить отчет в xls
+                // button(class="btn btn-primary", style="float:right; display:block;",  type="button", onclick="getUpdateReportXls()") отчет в xls
+                a(id="reportXls", style="float:right; display:block;") отчет в xls
                 div(class="clear")
             div(class="panel-body")
                 ul(class="list-group")

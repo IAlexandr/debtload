@@ -1,8 +1,8 @@
 var currentSessionId = 0;
 
 socket.on('prepReportCompleted', function (err, session) {
-    if (err){
-        $("#output").html("<div class='wrongMessage'><b>Произошла ошибка: </b> "+ err +"</div>");
+    if (err) {
+        $("#output").html("<div class='wrongMessage'><b>Произошла ошибка: </b> " + err + "</div>");
     } else {
         if (session.id == currentSessionId) {
             nextStep(session.state);
@@ -22,11 +22,12 @@ socket.on('prepReportCompleted', function (err, session) {
 });
 
 socket.on('updateReportCompleted', function (err, session) {
-    if (err){
-        $("#dataStartUpdateOutput").html("<div class='wrongMessage'><b>Произошла ошибка: </b> "+ err +"</div>");
+    if (err) {
+        $("#dataStartUpdateOutput").html("<div class='wrongMessage'><b>Произошла ошибка: </b> " + err + "</div>");
     } else {
         if (session.id == currentSessionId) {
             nextStep('updateReport');
+            $("#reportXls").attr("href", "debt/reportToXls?currentSessionId=" + currentSessionId);
             // todo вывести отчет
             var report = JSON.parse(session.updateReport);
             document.getElementById("updateFsTotalQuantity").innerHTML = report.FsObjInDebtsData.totals;
@@ -47,22 +48,20 @@ socket.on('updateReportCompleted', function (err, session) {
 
 function clearActiveClass() {
     $('li').removeClass('active');
-   // $('.panel').removeClass('paneShow');
-    $( ".panel" ).fadeOut( 1000, function() {
+    $(".panel").fadeOut(1000, function () {
         // Animation complete.
     });
 }
 function nextStep(step) {
     clearActiveClass();
     $('#' + step).addClass('active');
-   // $('#' + step + "Panel").addClass('paneShow');
-    $( '#' + step + "Panel" ).fadeIn( "slow", function() {
+    $('#' + step + "Panel").fadeIn("slow", function () {
         // Animation complete
     });
 }
 
 
-function updateDebts () {
+function updateDebts() {
 
     $.ajax({
         url: "debt/update",
@@ -73,28 +72,7 @@ function updateDebts () {
         dataType: "json",
         success: function (res) {
             nextStep('dataStartUpdate');
-            $("#dataStartUpdateOutput").html("<div><b>"+ res.message +"</b></div>");
+            $("#dataStartUpdateOutput").html("<div><b>" + res.message + "</b></div>");
         }
     });
-   /* $.post("debt/debtsUpdate",
-        {
-            currentSessionId: currentSessionId
-        },
-        function(data,status){
-            alert("Data: " + data + "\nStatus: " + status);
-        });*/
 };
-
-function getUpdateReportXls () {
-    $.ajax({
-        url: "debt/reportToXls",
-        type: "GET",
-        data: {
-            currentSessionId: currentSessionId
-        },
-        dataType: "json",
-        success: function (res) {
-            // file xls
-        }
-    });
-}
