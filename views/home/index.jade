@@ -57,19 +57,22 @@ html(lang="en",ng-app="main")
                         span Поиск задолженности(из файла) для рекламных конструкций (из слоя)
                     li(class="list-group-item")
                         span Общее кол-во рекламных конструкций в слое
-                        span(class="badge")
-                            span(id="FsTotalQuantity")
+                        div(class="badge")
+                            div(id="FsTotalQuantity")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Для них найдено соответствующих записей в файле с задолженностью
-                        span(class="badge")
-                            span(id="FsUpdateQuantity")
+                        div(class="badge")
+                            div(id="FsUpdateQuantity")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Список объектов в слое (Рекламные конструкции) для которых найдены соответствующие записи с задолженностью в файле:
                         div(id="FsFoundObjList")
                     li(class="list-group-item")
                         span Количество объектов в слое (Рекламные конструкции) для которых не найдено записей с задолженностью в файле
-                        span(class="badge")
+                        div(class="badge")
                             span(id="FsMissQuantity")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Список объектов в слое (Рекламные конструкции) для которых не найдено записей с задолженностью в файле:
                         div(id="FsMissObjList")
@@ -78,19 +81,22 @@ html(lang="en",ng-app="main")
                         span Справочно: проверка наличия объектов в слое (Рекламные контструкции) для записей в файле с задолженностью
                     li(class="list-group-item")
                         span Общее кол-во записей о задолженности в файле
-                        span(class="badge")
+                        div(class="badge")
                             span(id="DebtsTotalQuantity")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Из них записи для которых найдены соответствующие объекты в слое
-                        span(class="badge")
+                        div(class="badge")
                             span(id="DebtsUpdateQuantity")
+                        div(class="clear")
                     li(class="list-group-item")
-                        span Список записей с задолженностью в файле для которых найдены соответствующие объекты в слое (Рекламные конструкции):
+                        span Список повторяющихся записей с задолженностью в файле для которых найдены соответствующие объекты в слое  ("СНР. объекта аренды": [количество повторений]):
                         div(id="DebtsFoundObjList")
                     li(class="list-group-item")
                         span Из них записи для которых не найдены соответствующие объекты в слое
-                        span(class="badge")
+                        div(class="badge")
                             span(id="DebtsMissQuantity")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Список записей с задолженностью в файле для которых не найдены соответствующие объекты в слое (Рекламные конструкции):
                         div(id="DebtsMissObjList")
@@ -114,22 +120,27 @@ html(lang="en",ng-app="main")
                         span Общее кол-во рекламных конструкций в слое
                         span(class="badge")
                             span(id="updateFsTotalQuantity")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Для них найдено соответствующих записей в файле с задолженностью
                         span(class="badge")
                             span(id="updateFsFoundsQuantity")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Из них выполнено обновлений
                         span(class="badge")
                             span(id="updateFsUpdated")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Не выполнено
                         span(class="badge")
                             span(id="updateFsFoundsWithError")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Количество объектов в слое (Рекламные конструкции) для которых не найдено записей с задолженностью в файле
                         span(class="badge")
                             span(id="updateFsMissQuantity")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Список объектов в слое (Рекламные конструкции) для которых не найдено записей с задолженностью в файле:
                         div(id="updateFsMissObjList")
@@ -140,14 +151,17 @@ html(lang="en",ng-app="main")
                         span Общее кол-во записей о задолженности в файле
                         span(class="badge")
                             span(id="updateDebtsTotalQuantity")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Из них записи для которых найдены соответствующие объекты в слое
                         span(class="badge")
                             span(id="updateDebtsUpdateQuantity")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Из них записи для которых не найдены соответствующие объекты в слое
                         span(class="badge")
                             span(id="updateDebtsMissQuantity")
+                        div(class="clear")
                     li(class="list-group-item")
                         span Список записей с задолженностью в файле для которых не найдены соответствующие объекты в слое (Рекламные конструкции):
                         div(id="updateDebtsMissObjList")
