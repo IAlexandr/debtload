@@ -24,15 +24,20 @@ var asyncBuildPrepReport = function (session) {
     debtsPrepare.buildPrepReport(session.sourceFilePath, session.fsUrl, function (err, result) {
         if (err) {
             session.prepReport = err;
-            session.save(function (err) {
-                io.sockets.emit('prepReportCompleted', err, session);
+            session.state = 'fileLoaded';
+            session.save(function (saveerr) {
+                if (err){
+                    return io.sockets.emit('prepReportCompleted', err.message, session);
+                } else {
+                    return io.sockets.emit('prepReportCompleted', saveerr, session);
+                }
             });
         } else {
             session.state = 'prepReport';
             session.prepReport = result;
 
             session.save(function (err) {
-                io.sockets.emit('prepReportCompleted', err, session);
+                return io.sockets.emit('prepReportCompleted', err, session);
             });
         }
     });
@@ -55,15 +60,19 @@ var dataUpdate = function (session) {
     debtsUpdate.update(updateReportPath, session.sourceFilePath, session.fsUrl, function (err, result) {
         if (err) {
             session.updateReport = err;
-            session.save(function (err) {
-                return io.sockets.emit('updateReportCompleted', err, session);
+            session.save(function (saveerr) {
+                if (err){
+                    return io.sockets.emit('updateReportCompleted', err.message, session);
+                } else {
+                    return io.sockets.emit('updateReportCompleted', saveerr, session);
+                }
             });
         } else {
             session.state = 'dataUpdated';
             session.updateReport = result;
 
             session.save(function (err) {
-                io.sockets.emit('updateReportCompleted', err, session);
+                return io.sockets.emit('updateReportCompleted', err, session);
             });
         }
     });
