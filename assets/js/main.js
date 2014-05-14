@@ -2,7 +2,8 @@ var currentSessionId = 0;
 
 socket.on('prepReportCompleted', function (err, session) {
     if (err) {
-        $("#output").html("<div class='wrongMessage'><b>Произошла ошибка: </b> " + err + "</div>");
+        nextStep(session.state);
+        $("#outputfileLoaded").html("<div class='wrongMessage'><b>Произошла ошибка: </b> " + err + "</div>");
     } else {
         if (session.id == currentSessionId) {
             nextStep(session.state);
@@ -10,11 +11,17 @@ socket.on('prepReportCompleted', function (err, session) {
             var report = JSON.parse(session.prepReport);
             document.getElementById("FsTotalQuantity").innerHTML = report.FsObjInDebtsData.totals;
             document.getElementById("FsUpdateQuantity").innerHTML = report.FsObjInDebtsData.founds;
+
+            document.getElementById("FsFoundObjList").innerHTML = report.FsObjInDebtsData.foundList;
+
             document.getElementById("FsMissQuantity").innerHTML = report.FsObjInDebtsData.unfounds;
             document.getElementById("FsMissObjList").innerHTML = report.FsObjInDebtsData.unfoundList;
 
             document.getElementById("DebtsTotalQuantity").innerHTML = report.DebtsDataInFsObj.totals;
             document.getElementById("DebtsUpdateQuantity").innerHTML = report.DebtsDataInFsObj.founds;
+
+            document.getElementById("DebtsFoundObjList").innerHTML = report.DebtsDataInFsObj.foundList;
+
             document.getElementById("DebtsMissQuantity").innerHTML = report.DebtsDataInFsObj.unfounds;
             document.getElementById("DebtsMissObjList").innerHTML = report.DebtsDataInFsObj.unfoundList;
         }
