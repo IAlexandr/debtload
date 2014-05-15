@@ -21,6 +21,7 @@ socket.on('prepReportCompleted', function (err, session) {
             document.getElementById("DebtsUpdateQuantity").innerHTML = report.DebtsDataInFsObj.founds;
 
             document.getElementById("DebtsFoundObjList").innerHTML = report.DebtsDataInFsObj.foundList;
+            document.getElementById("DebtsCopyQuantity").innerHTML = report.DebtsDataInFsObj.foundList.length;
 
             document.getElementById("DebtsMissQuantity").innerHTML = report.DebtsDataInFsObj.unfounds;
             document.getElementById("DebtsMissObjList").innerHTML = report.DebtsDataInFsObj.unfoundList;
@@ -83,3 +84,16 @@ function updateDebts() {
         }
     });
 };
+
+var app = angular.module('main', [])
+    .controller('journalController', function ($scope) {
+        $scope.sessions = [];
+        $scope.getSessions = function () {
+            $.get( "sessions", function( data ) {
+                var updList = _.where(data, {"state": "dataUpdated"});
+                $scope.sessions = updList;
+                $scope.$apply();
+            });
+        }
+        $scope.getSessions();
+    })

@@ -60,6 +60,7 @@ var dataUpdate = function (session) {
     debtsUpdate.update(updateReportPath, session.sourceFilePath, session.fsUrl, function (err, result) {
         if (err) {
             session.updateReport = err;
+            session.createdDate = new Date();
             session.save(function (saveerr) {
                 if (err){
                     return io.sockets.emit('updateReportCompleted', err.message, session);
@@ -69,6 +70,20 @@ var dataUpdate = function (session) {
             });
         } else {
             session.state = 'dataUpdated';
+
+            // For todays date;
+            Date.prototype.today = function () {
+                return ((this.getDate() < 10)?"0":"") + this.getDate() +"."+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"."+ this.getFullYear();
+            }
+
+// For the time now
+            Date.prototype.timeNow = function () {
+                return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
+            }
+
+            var newDate = new Date();
+            var datetime = newDate.today() + " - " + newDate.timeNow();
+            session.createdDate = datetime;
             session.updateReport = result;
 
             session.save(function (err) {

@@ -22,6 +22,7 @@ module.exports = {
         fsUrl: 'string',
         prepReport: 'string',
         updateReport: 'string',
-        updateReportXlsFilePath: 'string'
+        updateReportXlsFilePath: 'string',
+        createdDate: 'string'
     }
 };

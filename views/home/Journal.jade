@@ -1,0 +1,51 @@
+doctype html
+html(lang="en",ng-app="main")
+    head
+        link(rel="stylesheet", href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')
+        link(rel="stylesheet", href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css')
+        link(rel="stylesheet", href='/styles/style.css')
+
+        script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+        script(type="text/javascript", src="http://malsup.github.com/jquery.form.js")
+
+        script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js")
+
+        script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
+        script(src="http://underscorejs.org/underscore.js")
+        script(type="text/javascript", src="/js/socket.io.js")
+        script(type="text/javascript", src="/js/sails.io.js")
+        script(type="text/javascript", src="js/app.js")
+        script(type="text/javascript", src="js/main.js")
+        script(type="text/javascript").
+            $(function () {
+                $('#journal').tab('show');
+                $('#journalPane').fadeIn("slow", function () {
+                    // Animation complete
+                });
+
+            })
+        title Обновление данных
+    body(class="container")
+        div(class="page-header")
+            h2 Обновление задолженности в слое рекламные конструкции
+        nav(class="navbar navbar-default", role="navigation")
+            div(class="container-fluid")
+                ul(class="nav navbar-nav")
+                    li
+                        a(id="masterRef", href="/") Мастер обновления
+                    li
+                        a(id="journal", href="journal") Журнал
+        div(class="panel panel-default paneHide", id="journalPane")
+            div(class="panel-heading") Журнал обновлений
+            div(class="panel-body")
+                div(ng-controller="journalController")
+                    table(class="table table-hover")
+                        thead
+                            tr
+                                th Дата и время обновления
+                                th Отчет (в формате xlsx)
+                        tbody
+                            tr(ng-repeat="session in sessions")
+                                td {{session.createdDate}}
+                                td
+                                    a(href="debt/reportToXls?currentSessionId={{session.id}}", download="Отчет {{session.createdDate}}.xlsx") скачать

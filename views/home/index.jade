@@ -1,21 +1,33 @@
 doctype html
-html(lang="en",ng-app="main")
+html(lang="en")
     head
         link(rel="stylesheet", href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')
+        link(rel="stylesheet", href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css')
         link(rel="stylesheet", href='/styles/style.css')
         script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
         script(type="text/javascript", src="http://malsup.github.com/jquery.form.js")
+        script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js")
+        script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
         script(type="text/javascript", src="/js/socket.io.js")
         script(type="text/javascript", src="/js/sails.io.js")
         script(type="text/javascript", src="js/app.js")
-
         script(type="text/javascript", src="js/main.js")
         script(type="text/javascript", src="js/uploadFile.js")
-
+        script(type="text/javascript").
+            $(function () {
+                $('#masterRef').tab('show');
+            })
         title Обновление данных
     body(class="container")
         div(class="page-header")
             h2 Обновление задолженности в слое рекламные конструкции
+        nav(class="navbar navbar-default", role="navigation")
+            div(class="container-fluid")
+                ul(class="nav navbar-nav")
+                    li(class="active")
+                        a(id="masterRef", href="#") Мастер обновления
+                    li
+                        a(id="journal", href="/journal") Журнал
         ol(class="breadcrumb")
             li(id="uploadFile", class="active") 1. Загрузка файла
             li(id="fileLoaded") 2. Файл загружен
@@ -91,6 +103,9 @@ html(lang="en",ng-app="main")
                         div(class="clear")
                     li(class="list-group-item")
                         span Список повторяющихся записей с задолженностью в файле для которых найдены соответствующие объекты в слое  ("СНР. объекта аренды": [количество повторений]):
+                        div(class="badge")
+                            span(id="DebtsCopyQuantity")
+                            div(class="clear")
                         div(id="DebtsFoundObjList")
                     li(class="list-group-item")
                         span Из них записи для которых не найдены соответствующие объекты в слое
